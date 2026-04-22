@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finanças para Autônomos e MEIs</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green:      #1B6B45;
+    --green-mid:  #2E9E68;
+    --green-lite: #E8F5EE;
+    --green-dark: #0F4028;
+    --gold:       #F4A91F;
+    --gold-lite:  #FFF8E7;
+    --dark:       #0D1B11;
+    --text:       #1A2E1E;
+    --muted:      #5A7563;
+    --white:      #FFFFFF;
+    --off-white:  #F7FAF8;
+    --border:     #D4E8DA;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    background: var(--green-dark);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(46,158,104,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,158,104,.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(244,169,31,.18) 0%, transparent 70%);
+    top: -200px; right: -150px;
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(46,158,104,.22) 0%, transparent 70%);
+    bottom: -150px; left: -100px;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 32px 72px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(244,169,31,.15);
+    border: 1px solid rgba(244,169,31,.4);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 28px;
+    animation: fadeUp .6s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    animation: fadeUp .7s .1s ease both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: rgba(255,255,255,.7);
+    line-height: 1.7;
+    max-width: 620px;
+    margin: 0 auto 40px;
+    font-weight: 300;
+    animation: fadeUp .7s .2s ease both;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    animation: fadeUp .7s .3s ease both;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 18px 48px;
+    border-radius: 4px;
+    text-decoration: none;
+    letter-spacing: .01em;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 0 0 0 rgba(244,169,31,.4);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(244,169,31,.4);
+  }
+
+  .hero-note {
+    font-size: .82rem;
+    color: rgba(255,255,255,.45);
+    letter-spacing: .02em;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,.1);
+    flex-wrap: wrap;
+    animation: fadeUp .8s .4s ease both;
+  }
+
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: .8rem;
+    color: rgba(255,255,255,.5);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+
+  /* ── PAIN ─────────────────────────────────────────── */
+  .pain {
+    background: var(--off-white);
+    padding: 80px 32px;
+  }
+  .pain-inner { max-width: 760px; margin: 0 auto; }
+  .section-eyebrow {
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .section-title em { font-style: italic; color: var(--green); }
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  .pain-list {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+  .pain-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 3px solid #E53E3E;
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-size: .97rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .pain-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+
+  /* ── FOR WHOM ─────────────────────────────────────── */
+  .forwhom {
+    background: var(--green-dark);
+    padding: 80px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .forwhom::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,158,104,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,158,104,.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .forwhom-inner {
+    position: relative; z-index: 2;
+    max-width: 820px; margin: 0 auto; text-align: center;
+  }
+  .forwhom .section-eyebrow { color: var(--gold); }
+  .forwhom .section-title { color: var(--white); }
+  .forwhom .section-lead { color: rgba(255,255,255,.6); }
+
+  .forwhom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .forwhom-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 8px;
+    padding: 24px 20px;
+    text-align: center;
+    transition: background .2s, border-color .2s;
+  }
+  .forwhom-card:hover {
+    background: rgba(255,255,255,.1);
+    border-color: rgba(244,169,31,.4);
+  }
+  .forwhom-emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
+  .forwhom-name {
+    font-weight: 600;
+    font-size: .95rem;
+    color: var(--white);
+  }
+
+  /* ── MODULES ──────────────────────────────────────── */
+  .modules {
+    background: var(--white);
+    padding: 80px 32px;
+  }
+  .modules-inner { max-width: 820px; margin: 0 auto; }
+  .modules-header { text-align: center; margin-bottom: 48px; }
+
+  .module-card {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .module-card:hover {
+    box-shadow: 0 8px 32px rgba(27,107,69,.1);
+    transform: translateY(-2px);
+  }
+  .module-num {
+    background: var(--green);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    writing-mode: horizontal-tb;
+    flex-shrink: 0;
+  }
+  .module-body { padding: 20px 24px; }
+  .module-tag {
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 4px;
+  }
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .module-items {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .module-item {
+    font-size: .8rem;
+    background: var(--green-lite);
+    color: var(--green);
+    border-radius: 100px;
+    padding: 3px 12px;
+    font-weight: 500;
+  }
+
+  /* ── WHAT YOU GET ─────────────────────────────────── */
+  .gets {
+    background: var(--green-lite);
+    padding: 80px 32px;
+  }
+  .gets-inner { max-width: 820px; margin: 0 auto; }
+  .gets-header { text-align: center; margin-bottom: 48px; }
+
+  .gets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .get-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    text-align: center;
+  }
+  .get-icon {
+    width: 52px; height: 52px;
+    background: var(--green);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 16px;
+  }
+  .get-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .get-desc {
+    font-size: .87rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── TESTIMONIALS ─────────────────────────────────── */
+  .testimonials {
+    background: var(--off-white);
+    padding: 80px 32px;
+  }
+  .testimonials-inner { max-width: 860px; margin: 0 auto; }
+  .testimonials-header { text-align: center; margin-bottom: 48px; }
+
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .testi-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    position: relative;
+  }
+  .testi-quote {
+    font-size: 2.5rem;
+    color: var(--green-lite);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .testi-text {
+    font-size: .93rem;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .testi-stars {
+    color: var(--gold);
+    font-size: .9rem;
+    margin-bottom: 12px;
+    letter-spacing: .05em;
+  }
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .testi-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .testi-name { font-weight: 600; font-size: .9rem; color: var(--text); }
+  .testi-role { font-size: .78rem; color: var(--muted); }
+
+  /* ── OBJECTIONS ───────────────────────────────────── */
+  .objections {
+    background: var(--white);
+    padding: 80px 32px;
+  }
+  .objections-inner { max-width: 760px; margin: 0 auto; }
+  .objections-header { text-align: center; margin-bottom: 48px; }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border);
+    padding: 22px 0;
+  }
+  .faq-q {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .faq-q::before {
+    content: '?';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px; height: 24px;
+    background: var(--green);
+    color: var(--white);
+    border-radius: 50%;
+    font-size: .75rem;
+    font-weight: 700;
+    margin-top: 1px;
+  }
+  .faq-a {
+    font-size: .95rem;
+    color: var(--muted);
+    line-height: 1.75;
+    padding-left: 36px;
+  }
+
+  /* ── PRICING ──────────────────────────────────────── */
+  .pricing {
+    background: var(--green-dark);
+    padding: 80px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pricing::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(46,158,104,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,158,104,.07) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .pricing-inner {
+    position: relative; z-index: 2;
+    max-width: 540px; margin: 0 auto; text-align: center;
+  }
+  .pricing .section-eyebrow { color: var(--gold); }
+  .pricing .section-title { color: var(--white); }
+
+  .price-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 44px 40px;
+    margin-top: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+  }
+
+  .price-badge {
+    display: inline-block;
+    background: var(--green-lite);
+    color: var(--green);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .price-from {
+    font-size: .85rem;
+    color: var(--muted);
+    text-decoration: line-through;
+    margin-bottom: 4px;
+  }
+  .price-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.8rem;
+    font-weight: 900;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-main sup {
+    font-size: 1.8rem;
+    vertical-align: super;
+    font-weight: 700;
+  }
+  .price-sub {
+    font-size: .85rem;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+
+  .price-includes {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 32px;
+    display: grid;
+    gap: 12px;
+  }
+  .price-include {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: .93rem;
+    color: var(--text);
+  }
+  .price-include::before {
+    content: '✓';
+    width: 22px; height: 22px;
+    background: var(--green);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .btn-cta-big {
+    display: block;
+    width: 100%;
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: .01em;
+    transition: transform .2s, box-shadow .2s;
+    margin-bottom: 16px;
+  }
+  .btn-cta-big:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(244,169,31,.5);
+  }
+
+  .price-guarantee {
+    font-size: .8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* ── GUARANTEE ────────────────────────────────────── */
+  .guarantee {
+    background: var(--off-white);
+    padding: 64px 32px;
+  }
+  .guarantee-inner {
+    max-width: 680px; margin: 0 auto;
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  .guarantee-icon {
+    font-size: 3.5rem;
+    flex-shrink: 0;
+  }
+  .guarantee-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .guarantee-text {
+    font-size: .95rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  /* ── FINAL CTA ────────────────────────────────────── */
+  .final-cta {
+    background: var(--green);
+    padding: 80px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::after {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+    top: -200px; right: -150px;
+  }
+  .final-cta-inner { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+  .final-cta .section-title { color: var(--white); }
+  .final-cta .section-lead { color: rgba(255,255,255,.7); }
+
+  /* ── FOOTER ───────────────────────────────────────── */
+  footer {
+    background: var(--dark);
+    padding: 32px;
+    text-align: center;
+    font-size: .8rem;
+    color: rgba(255,255,255,.3);
+    line-height: 1.8;
+  }
+
+  /* ── ANIMATIONS ───────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── STICKY CTA BAR ───────────────────────────────── */
+  .sticky-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--green-dark);
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 100;
+    transform: translateY(100%);
+    transition: transform .4s ease;
+    flex-wrap: wrap;
+  }
+  .sticky-bar.show { transform: translateY(0); }
+  .sticky-text {
+    color: rgba(255,255,255,.8);
+    font-size: .9rem;
+    font-weight: 500;
+  }
+  .sticky-text strong { color: var(--gold); }
+  .btn-sticky {
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 700;
+    font-size: .9rem;
+    padding: 10px 28px;
+    border-radius: 4px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity .2s;
+  }
+  .btn-sticky:hover { opacity: .9; }
+
+  /* ── DIVIDER ──────────────────────────────────────── */
+  .divider-leaf {
+    text-align: center;
+    font-size: 1.4rem;
+    padding: 8px 0;
+    color: var(--green-mid);
+    opacity: .5;
+    letter-spacing: .3em;
+  }
+
+  @media (max-width: 600px) {
+    .hero-stats { gap: 24px; }
+    .guarantee-inner { flex-direction: column; }
+    .price-main { font-size: 3rem; }
+    .price-card { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <span class="sticky-text">Curso completo por apenas <strong>R$ 97</strong></span>
+  <a href="#comprar" class="btn-sticky">Quero me inscrever →</a>
+</div>
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <span class="hero-badge">Curso 100% Digital · Sem Vídeo Aula · Acesso Imediato</span>
+    <h1 class="hero-title">
+      Pare de trabalhar muito<br>
+      e <em>ganhar pouco</em>
+    </h1>
+    <p class="hero-sub">
+      O curso completo de finanças para autônomos e MEIs que ninguém ensina —
+      sem enrolação, sem economês e sem precisar de contador.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#comprar" class="btn-primary">Quero organizar minhas finanças →</a>
+      <span class="hero-note">Acesso imediato · Pagamento 100% seguro</span>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Módulos completos</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">20+</span>
+        <span class="stat-label">Aulas em PDF</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">5</span>
+        <span class="stat-label">Planilhas prontas</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">R$97</span>
+        <span class="stat-label">Valor único</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOR ────────────────────────────────────────────── -->
+<section class="pain">
+  <div class="pain-inner reveal">
+    <p class="section-eyebrow">Você se identifica?</p>
+    <h2 class="section-title">O dinheiro entra — e some.<br><em>Todo mês a mesma história.</em></h2>
+    <p class="section-lead">Se você é autônomo ou MEI e vive alguma dessas situações, este curso foi feito exatamente para você:</p>
+    <ul class="pain-list">
+      <li class="pain-item"><span class="pain-icon">💸</span> No fim do mês o dinheiro simplesmente acabou — e você não sabe para onde foi.</li>
+      <li class="pain-item"><span class="pain-icon">🤷</span> Você cobra um valor "que acha justo", mas não sabe se está cobrindo todos os custos.</li>
+      <li class="pain-item"><span class="pain-icon">📱</span> Mistura conta pessoal com conta do negócio e nunca tem clareza do saldo real.</li>
+      <li class="pain-item"><span class="pain-icon">😰</span> O DAS, a DASN e o fisco te dão medo — então você ignora até virar problema.</li>
+      <li class="pain-item"><span class="pain-icon">🚨</span> Não tem reserva de emergência. Um mês ruim e as contas não fecham.</li>
+      <li class="pain-item"><span class="pain-icon">🔄</span> Trabalha muito, fatura bem — mas no fim do ano nada sobrou.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── PARA QUEM ───────────────────────────────────────── -->
+<section class="forwhom">
+  <div class="forwhom-inner reveal">
+    <p class="section-eyebrow">Para quem é este curso</p>
+    <h2 class="section-title">Feito para quem trabalha <em>por conta própria</em></h2>
+    <p class="section-lead">Não importa a área — se você tem CNPJ ou presta serviços como autônomo, o conteúdo é para você.</p>
+    <div class="forwhom-grid">
+      <div class="forwhom-card"><span class="forwhom-emoji">💇</span><span class="forwhom-name">Cabeleireiros e esteticistas</span></div>
+      <div class="forwhom-card"><span class="forwhom-emoji">🎨</span><span class="forwhom-name">Designers e criativos</span></div>
+      <div class="forwhom-card"><span class="forwhom-emoji">🔧</span><span class="forwhom-name">Eletricistas e pedreiros</span></div>
+      <div class="forwhom-card"><span class="forwhom-emoji">📱</span><span class="forwhom-name">Social media e fotógrafos</span></div>
+      <div class="forwhom-card"><span class="forwhom-emoji">🏋️</span><span class="forwhom-name">Personal trainers</span></div>
+      <div class="forwhom-card"><span class="forwhom-emoji">🚗</span><span class="forwhom-name">Motoristas e entregadores</span></div>
+      <div class="forwhom-card"><span class="forwhom-emoji">👩‍💻</span><span class="forwhom-name">Freelancers de TI</span></div>
+      <div class="forwhom-card"><span class="forwhom-emoji">🌿</span><span class="forwhom-name">Qualquer MEI ou autônomo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MÓDULOS ─────────────────────────────────────────── -->
+<section class="modules">
+  <div class="modules-inner">
+    <div class="modules-header reveal">
+      <p class="section-eyebrow">Conteúdo do curso</p>
+      <h2 class="section-title">5 módulos que mudam<br><em>como você vê o dinheiro</em></h2>
+      <p class="section-lead" style="max-width:560px;margin:0 auto">Cada módulo entrega uma transformação real — não teoria, mas ferramentas que você usa no mesmo dia.</p>
+    </div>
+
+    <div class="module-card reveal">
+      <div class="module-num">1</div>
+      <div class="module-body">
+        <p class="module-tag">Módulo 1</p>
+        <h3 class="module-title">Entendendo Seu Dinheiro</h3>
+        <ul class="module-items">
+          <li class="module-item">Separação de contas</li>
+          <li class="module-item">Pró-labore</li>
+          <li class="module-item">Conta PJ gratuita</li>
+          <li class="module-item">Checklist completo</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card reveal">
+      <div class="module-num">2</div>
+      <div class="module-body">
+        <p class="module-tag">Módulo 2</p>
+        <h3 class="module-title">Precifique Sem Trabalhar no Prejuízo</h3>
+        <ul class="module-items">
+          <li class="module-item">4 custos ocultos</li>
+          <li class="module-item">Fórmula do preço mínimo</li>
+          <li class="module-item">Como dizer "não negocio"</li>
+          <li class="module-item">Calculadora pronta</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card reveal">
+      <div class="module-num">3</div>
+      <div class="module-body">
+        <p class="module-tag">Módulo 3</p>
+        <h3 class="module-title">Controle do Fluxo de Caixa</h3>
+        <ul class="module-items">
+          <li class="module-item">Registro em 5 minutos</li>
+          <li class="module-item">Projeção de 30 dias</li>
+          <li class="module-item">Antecipar crises</li>
+          <li class="module-item">Apps gratuitos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card reveal">
+      <div class="module-num">4</div>
+      <div class="module-body">
+        <p class="module-tag">Módulo 4</p>
+        <h3 class="module-title">MEI sem Medo do Fisco</h3>
+        <ul class="module-items">
+          <li class="module-item">DAS passo a passo</li>
+          <li class="module-item">DASN sem contador</li>
+          <li class="module-item">Limites do MEI</li>
+          <li class="module-item">Quando migrar para ME</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="module-card reveal">
+      <div class="module-num">5</div>
+      <div class="module-body">
+        <p class="module-tag">Módulo 5 · Final</p>
+        <h3 class="module-title">Reserva de Emergência com Renda Variável</h3>
+        <ul class="module-items">
+          <li class="module-item">Seu número ideal</li>
+          <li class="module-item">Método do percentual fixo</li>
+          <li class="module-item">Onde guardar</li>
+          <li class="module-item">Simulador incluso</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── O QUE VEM INCLUSO ───────────────────────────────── -->
+<section class="gets">
+  <div class="gets-inner">
+    <div class="gets-header reveal">
+      <p class="section-eyebrow">O que está incluso</p>
+      <h2 class="section-title">Tudo que você precisa,<br><em>sem nada desnecessário</em></h2>
+    </div>
+    <div class="gets-grid reveal">
+      <div class="get-card">
+        <div class="get-icon">📄</div>
+        <h4 class="get-title">5 PDFs completos</h4>
+        <p class="get-desc">Um por módulo, com conteúdo profundo, exemplos reais e linguagem simples.</p>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">📊</div>
+        <h4 class="get-title">5 Planilhas prontas</h4>
+        <p class="get-desc">Calculadora de preço, controle de caixa, simulador de reserva e mais.</p>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">✅</div>
+        <h4 class="get-title">5 Checklists</h4>
+        <p class="get-desc">Um por módulo para você medir onde está e o que ainda precisa implementar.</p>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">🗺️</div>
+        <h4 class="get-title">3 Guias práticos</h4>
+        <p class="get-desc">Passo a passo da DASN, erros do MEI e controle financeiro completo.</p>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">♾️</div>
+        <h4 class="get-title">Acesso vitalício</h4>
+        <p class="get-desc">Pague uma vez e acesse para sempre. Incluindo todas as atualizações.</p>
+      </div>
+      <div class="get-card">
+        <div class="get-icon">📲</div>
+        <h4 class="get-title">Funciona no celular</h4>
+        <p class="get-desc">Todo o material em PDF leve, legível em qualquer dispositivo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEPOIMENTOS ─────────────────────────────────────── -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-header reveal">
+      <p class="section-eyebrow">Resultados reais</p>
+      <h2 class="section-title">O que dizem quem <em>aplicou o conteúdo</em></h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <span class="testi-quote">"</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Abri minha conta PJ no mesmo dia que li o Módulo 1. Parece simples, mas mudou tudo. Agora sei exatamente o que posso gastar.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JL</div>
+          <div>
+            <p class="testi-name">Julia Lima</p>
+            <p class="testi-role">Designer Freelancer · SP</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <span class="testi-quote">"</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Descobri que estava cobrando R$ 80 a menos por serviço. Só com a fórmula de precificação do Módulo 2 recuperei o curso em 2 dias.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RC</div>
+          <div>
+            <p class="testi-name">Rodrigo Costa</p>
+            <p class="testi-role">Eletricista MEI · MG</p>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <span class="testi-quote">"</span>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Tinha 3 anos de DASN em atraso e nem sabia. Segui o guia do Módulo 4 e regularizei tudo em uma tarde. Alívio enorme.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">PM</div>
+          <div>
+            <p class="testi-name">Patrícia Melo</p>
+            <p class="testi-role">Cabeleireira MEI · RJ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OBJEÇÕES ────────────────────────────────────────── -->
+<section class="objections">
+  <div class="objections-inner">
+    <div class="objections-header reveal">
+      <p class="section-eyebrow">Dúvidas frequentes</p>
+      <h2 class="section-title">Ainda com <em>alguma dúvida?</em></h2>
+    </div>
+    <div class="reveal">
+      <div class="faq-item">
+        <p class="faq-q">Preciso ter conhecimento em finanças?</p>
+        <p class="faq-a">Não. O curso foi feito para quem nunca estudou finanças. A linguagem é simples, direta e sem economês. Se você sabe ler, vai entender tudo.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Por que não tem vídeo aula?</p>
+        <p class="faq-a">Porque PDF você lê no seu tempo, no seu ritmo, sem precisar de internet rápida. Você pode destacar, anotar, imprimir e voltar quantas vezes quiser. É mais prático para quem trabalha o dia todo.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">Funciona para quem ainda não é MEI?</p>
+        <p class="faq-a">Sim. Os módulos 1, 2 e 3 se aplicam a qualquer autônomo, com ou sem CNPJ. O Módulo 4 é focado no MEI, mas você pode aproveitar o restante agora e usar o módulo quando abrir o CNPJ.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">As planilhas são difíceis de usar?</p>
+        <p class="faq-a">Não. Elas foram criadas para quem não tem experiência com planilhas. Você só preenche os campos em amarelo — as fórmulas calculam tudo automaticamente.</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">O conteúdo fica desatualizado?</p>
+        <p class="faq-a">O acesso é vitalício e o conteúdo é atualizado sempre que há mudanças importantes nas regras do MEI ou na legislação. Você paga uma vez e recebe as atualizações sem custo adicional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PREÇO ───────────────────────────────────────────── -->
+<section class="pricing" id="comprar">
+  <div class="pricing-inner">
+    <p class="section-eyebrow">Investimento</p>
+    <h2 class="section-title">Comece hoje por<br><em>menos do que uma consulta</em></h2>
+
+    <div class="price-card reveal">
+      <span class="price-badge">Acesso completo e vitalício</span>
+      <p class="price-from">De R$ 197</p>
+      <div class="price-main"><sup>R$</sup>97</div>
+      <p class="price-sub">Pagamento único · Sem mensalidade · Sem renovação</p>
+
+      <ul class="price-includes">
+        <li class="price-include">5 módulos completos em PDF</li>
+        <li class="price-include">5 planilhas prontas para usar</li>
+        <li class="price-include">5 checklists de autoavaliação</li>
+        <li class="price-include">3 guias práticos bônus</li>
+        <li class="price-include">Acesso vitalício + atualizações</li>
+        <li class="price-include">Funciona em qualquer dispositivo</li>
+      </ul>
+
+      <a href="https://go.hotmart.com/G105474417E" class="btn-cta-big">Quero começar agora →</a>
+      <p class="price-guarantee">🔒 Pagamento seguro · Hotmart · Parcelável em até 3x</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── GARANTIA ────────────────────────────────────────── -->
+<section class="guarantee">
+  <div class="guarantee-inner reveal">
+    <div class="guarantee-icon">🛡️</div>
+    <div>
+      <h3 class="guarantee-title">Garantia de 7 dias</h3>
+      <p class="guarantee-text">
+        Se em até 7 dias após a compra você não estiver satisfeito com o conteúdo,
+        basta enviar um e-mail e devolveremos 100% do seu investimento sem perguntas.
+        O risco é todo nosso — você não tem nada a perder.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ───────────────────────────────────────── -->
+<section class="final-cta">
+  <div class="final-cta-inner reveal">
+    <p class="section-eyebrow" style="color:var(--gold)">Última chamada</p>
+    <h2 class="section-title" style="margin-bottom:16px">
+      A próxima conta que vence<br>não vai esperar você <em>se organizar</em>
+    </h2>
+    <p class="section-lead">
+      Cada mês sem controle financeiro é dinheiro perdido, estresse acumulado
+      e oportunidades que passam. Com R$ 97 e menos de uma semana de leitura,
+      você tem tudo para virar o jogo.
+    </p>
+    <br>
+    <a href="#comprar" class="btn-primary" style="font-size:1.1rem;padding:20px 56px">
+      Quero me inscrever agora →
+    </a>
+    <p class="hero-note" style="margin-top:16px;color:rgba(255,255,255,.4)">
+      Acesso imediato · Garantia de 7 dias · Pagamento seguro
+    </p>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────── -->
+<footer>
+  <p>Finanças para Autônomos e MEIs · Curso Digital</p>
+  <p style="margin-top:6px">© 2025 · Todos os direitos reservados · Conteúdo protegido por lei</p>
+  <p style="margin-top:6px">Este curso é um produto educacional e não substitui assessoria contábil ou financeira profissional.</p>
+</footer>
+
+<script>
+  // ── Scroll reveal ──────────────────────────────────
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Sticky bar ─────────────────────────────────────
+  const stickyBar = document.getElementById('stickyBar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) stickyBar.classList.add('show');
+    else stickyBar.classList.remove('show');
+  });
+</script>
+</body>
+</html>
