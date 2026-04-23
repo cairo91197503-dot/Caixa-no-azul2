@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Caixa no Azul — App</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:      #1B6B45;
+  --green-mid:  #2E9E68;
+  --green-lite: #E8F5EE;
+  --green-dark: #0D2E1C;
+  --gold:       #F4A91F;
+  --gold-lite:  #FFF8E7;
+  --red:        #E53E3E;
+  --red-lite:   #FFF5F5;
+  --dark:       #0D1B11;
+  --text:       #1A2E1E;
+  --muted:      #6B8576;
+  --border:     #D4E8DA;
+  --bg:         #F4F9F6;
+  --white:      #FFFFFF;
+  --card:       #FFFFFF;
+  --nav-h:      68px;
+  --header-h:   60px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 0 60px rgba(0,0,0,.15);
+}
+
+/* ── HEADER ───────────────────────────────────────── */
+.app-header {
+  height: var(--header-h);
+  background: var(--green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.app-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--white);
+  letter-spacing: -.01em;
+}
+.app-logo span { color: var(--gold); }
+.header-badge {
+  font-size: .7rem;
+  font-weight: 600;
+  background: rgba(244,169,31,.2);
+  color: var(--gold);
+  border: 1px solid rgba(244,169,31,.3);
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: .06em;
+}
+
+/* ── SCROLL AREA ──────────────────────────────────── */
+.app-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(var(--nav-h) + 12px);
+}
+
+/* ── BOTTOM NAV ───────────────────────────────────── */
+.bottom-nav {
+  height: var(--nav-h);
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition: background .15s;
+  min-width: 60px;
+}
+.nav-btn:active { background: var(--green-lite); }
+.nav-icon { font-size: 1.4rem; line-height: 1; }
+.nav-label {
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--muted);
+  transition: color .15s;
+}
+.nav-btn.active .nav-label { color: var(--green); }
+.nav-btn.active .nav-icon  { filter: none; }
+.nav-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-top: -2px;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.nav-btn.active .nav-dot { opacity: 1; }
+
+/* ── SCREENS ──────────────────────────────────────── */
+.screen { display: none; padding: 16px; animation: slideUp .25s ease; }
+.screen.active { display: block; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SECTION HEADER ───────────────────────────────── */
+.screen-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.screen-sub {
+  font-size: .83rem;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* ── CARDS ────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title span { font-size: 1.1rem; }
+
+/* ── INPUTS ───────────────────────────────────────── */
+.field { margin-bottom: 12px; }
+.field label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.field input, .field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color .15s;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--green-mid);
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ── BUTTONS ──────────────────────────────────────── */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  letter-spacing: .01em;
+}
+.btn:active { transform: scale(.98); }
+.btn-green {
+  background: var(--green);
+  color: var(--white);
+}
+.btn-green:hover { box-shadow: 0 4px 20px rgba(27,107,69,.3); }
+.btn-gold {
+  background: var(--gold);
+  color: var(--dark);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--green);
+  border: 1.5px solid var(--green);
+}
+.btn-sm {
+  width: auto;
+  padding: 8px 18px;
+  font-size: .83rem;
+}
+.btn-red {
+  background: var(--red);
+  color: var(--white);
+}
+
+/* ── RESULT BOX ───────────────────────────────────── */
+.result-box {
+  background: var(--green-lite);
+  border: 1.5px solid var(--green-mid);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 14px;
+  display: none;
+}
+.result-box.show { display: block; }
+.result-label {
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+.result-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--green);
+}
+.result-note {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ── STAT CARDS ───────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+}
+.stat-card.green  { background: var(--green); border-color: var(--green); }
+.stat-card.gold   { background: var(--gold);  border-color: var(--gold); }
+.stat-card.red    { background: var(--red);   border-color: var(--red); }
+.stat-card.dark   { background: var(--green-dark); border-color: var(--green-dark); }
+.stat-icon { font-size: 1.3rem; margin-bottom: 6px; }
+.stat-label-sm {
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.stat-card.green  .stat-label-sm,
+.stat-card.gold   .stat-label-sm,
+.stat-card.red    .stat-label-sm,
+.stat-card.dark   .stat-label-sm { color: rgba(255,255,255,.7); }
+.stat-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+.stat-card.green .stat-val,
+.stat-card.gold  .stat-val,
+.stat-card.red   .stat-val,
+.stat-card.dark  .stat-val { color: var(--white); }
+
+/* ── TRANSACTION LIST ─────────────────────────────── */
+.tx-list { list-style: none; }
+.tx-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+}
+.tx-item:last-child { border-bottom: none; }
+.tx-info { flex: 1; min-width: 0; }
+.tx-desc {
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tx-date { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+.tx-amount {
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  font-size: .92rem;
+  white-space: nowrap;
+}
+.tx-amount.entrada { color: var(--green); }
+.tx-amount.saida   { color: var(--red); }
+.tx-del {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.tx-del:hover { color: var(--red); background: var(--red-lite); }
+.tx-empty {
+  text-align: center;
+  color: var(--muted);
+  font-size: .88rem;
+  padding: 28px 0;
+}
+
+/* ── PROGRESS BAR ─────────────────────────────────── */
+.prog-wrap { margin: 10px 0; }
+.prog-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: .75rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.prog-bar {
+  height: 10px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), var(--green-mid));
+  border-radius: 100px;
+  transition: width .5s ease;
+}
+.prog-fill.gold { background: linear-gradient(90deg, var(--gold), #f9c440); }
+
+/* ── CHECKLIST ────────────────────────────────────── */
+.check-list { list-style: none; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.check-item:last-child { border-bottom: none; }
+.check-box {
+  width: 22px; height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .75rem;
+  transition: all .15s;
+  margin-top: 1px;
+}
+.check-item.done .check-box {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+.check-text {
+  font-size: .88rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.check-item.done .check-text {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+/* ── TABS ─────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  background: var(--border);
+  padding: 4px;
+  border-radius: 12px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  border-radius: 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: .8rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .15s;
+}
+.tab-btn.active {
+  background: var(--white);
+  color: var(--green);
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+}
+
+/* ── BADGE ────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.badge-green { background: var(--green-lite); color: var(--green); }
+.badge-gold  { background: var(--gold-lite);  color: #B47D00; }
+.badge-red   { background: var(--red-lite);   color: var(--red); }
+
+/* ── ALERT ────────────────────────────────────────── */
+.alert {
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: .85rem;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.alert-icon { font-size: 1.1rem; flex-shrink: 0; }
+.alert-green { background: var(--green-lite); color: var(--green); border: 1px solid #A7D7B8; }
+.alert-gold  { background: var(--gold-lite);  color: #8A5E00; border: 1px solid #F4C46A; }
+.alert-red   { background: var(--red-lite);   color: var(--red); border: 1px solid #FEB2B2; }
+
+/* ── DIVIDER ──────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 0;
+}
+
+/* ── DAS MONTHS ───────────────────────────────────── */
+.das-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+.das-month {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  transition: all .15s;
+  background: var(--white);
+}
+.das-month:active { transform: scale(.95); }
+.das-month.pago {
+  background: var(--green);
+  border-color: var(--green);
+}
+.das-month.atrasado {
+  background: var(--red-lite);
+  border-color: var(--red);
+}
+.das-month-name {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+.das-month.pago .das-month-name { color: rgba(255,255,255,.9); }
+.das-month.atrasado .das-month-name { color: var(--red); }
+.das-month-icon { font-size: .9rem; }
+
+/* ── HOME DASHBOARD ───────────────────────────────── */
+.home-hero {
+  background: var(--green-dark);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.home-hero::after {
+  content: 'R$';
+  position: absolute;
+  right: -10px; bottom: -20px;
+  font-family: 'Syne', sans-serif;
+  font-size: 7rem;
+  font-weight: 900;
+  color: rgba(255,255,255,.05);
+  pointer-events: none;
+}
+.home-greeting {
+  font-size: .78rem;
+  color: rgba(255,255,255,.5);
+  margin-bottom: 4px;
+  letter-spacing: .05em;
+}
+.home-saldo-label {
+  font-size: .75rem;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.home-saldo {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.home-saldo.negativo { color: #FC8181; }
+.home-row {
+  display: flex;
+  gap: 16px;
+}
+.home-mini { flex: 1; }
+.home-mini-label {
+  font-size: .68rem;
+  color: rgba(255,255,255,.5);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 2px;
+}
+.home-mini-val {
+  font-family: 'DM Mono', monospace;
+  font-size: .95rem;
+  font-weight: 500;
+  color: var(--white);
+}
+.home-mini-val.entrada { color: #68D391; }
+.home-mini-val.saida   { color: #FC8181; }
+
+.module-shortcuts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.shortcut-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: left;
+}
+.shortcut-card:active {
+  transform: scale(.97);
+  background: var(--green-lite);
+}
+.shortcut-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+.shortcut-name {
+  font-weight: 700;
+  font-size: .82rem;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.shortcut-desc {
+  font-size: .72rem;
+  color: var(--muted);
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="app-logo">Caixa <span>no Azul</span></div>
+  <span class="header-badge">APP</span>
+</header>
+
+<!-- BODY -->
+<div class="app-body">
+
+  <!-- ══ DASHBOARD ══════════════════════════════════ -->
+  <div class="screen active" id="screen-home">
+    <div class="home-hero" id="home-hero">
+      <p class="home-greeting">Olá! Seu resumo de hoje 👋</p>
+      <p class="home-saldo-label">Saldo do negócio</p>
+      <p class="home-saldo" id="dash-saldo">R$ 0,00</p>
+      <div class="home-row">
+        <div class="home-mini">
+          <p class="home-mini-label">Entradas</p>
+          <p class="home-mini-val entrada" id="dash-entrada">R$ 0,00</p>
+        </div>
+        <div class="home-mini">
+          <p class="home-mini-label">Saídas</p>
+          <p class="home-mini-val saida" id="dash-saida">R$ 0,00</p>
+        </div>
+        <div class="home-mini">
+          <p class="home-mini-label">Reserva</p>
+          <p class="home-mini-val" id="dash-reserva" style="color:#F6E05E">R$ 0,00</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="screen-title">Módulos</p>
+    <p class="screen-sub">Toque para acessar cada ferramenta</p>
+
+    <div class="module-shortcuts">
+      <div class="shortcut-card" onclick="goTo('prolabore')">
+        <span class="shortcut-icon">💼</span>
+        <p class="shortcut-name">Pró-labore</p>
+        <p class="shortcut-desc">Calcule seu salário</p>
+      </div>
+      <div class="shortcut-card" onclick="goTo('preco')">
+        <span class="shortcut-icon">🏷️</span>
+        <p class="shortcut-name">Precificação</p>
+        <p class="shortcut-desc">Preço mínimo do serviço</p>
+      </div>
+      <div class="shortcut-card" onclick="goTo('caixa')">
+        <span class="shortcut-icon">📊</span>
+        <p class="shortcut-name">Fluxo de Caixa</p>
+        <p class="shortcut-desc">Entradas e saídas</p>
+      </div>
+      <div class="shortcut-card" onclick="goTo('mei')">
+        <span class="shortcut-icon">📋</span>
+        <p class="shortcut-name">MEI / DAS</p>
+        <p class="shortcut-desc">Controle do fisco</p>
+      </div>
+      <div class="shortcut-card" onclick="goTo('reserva')">
+        <span class="shortcut-icon">🛡️</span>
+        <p class="shortcut-name">Reserva</p>
+        <p class="shortcut-desc">Emergência financeira</p>
+      </div>
+      <div class="shortcut-card" onclick="goTo('checklist')">
+        <span class="shortcut-icon">✅</span>
+        <p class="shortcut-name">Checklist</p>
+        <p class="shortcut-desc">Seu progresso geral</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CALCULADORAS ════════════════════════════════ -->
+  <div class="screen" id="screen-calc">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('prolabore', this)">Pró-labore</button>
+      <button class="tab-btn" onclick="switchTab('preco', this)">Preço</button>
+    </div>
+
+    <!-- PRÓ-LABORE -->
+    <div id="tab-prolabore">
+      <p class="screen-title">💼 Calculadora de Pró-labore</p>
+      <p class="screen-sub">Defina seu salário como dono do negócio</p>
+      <div class="card">
+        <p class="card-title"><span>🏠</span> Seus gastos pessoais/mês</p>
+        <div class="field-row">
+          <div class="field"><label>Moradia</label><input type="number" id="pl-moradia" placeholder="0,00"></div>
+          <div class="field"><label>Alimentação</label><input type="number" id="pl-aliment" placeholder="0,00"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Transporte</label><input type="number" id="pl-transp" placeholder="0,00"></div>
+          <div class="field"><label>Saúde</label><input type="number" id="pl-saude" placeholder="0,00"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Lazer</label><input type="number" id="pl-lazer" placeholder="0,00"></div>
+          <div class="field"><label>Outros</label><input type="number" id="pl-outros" placeholder="0,00"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="field"><label>Faturamento médio/mês (R$)</label><input type="number" id="pl-fat" placeholder="Ex: 5000"></div>
+        <button class="btn btn-green" onclick="calcProlabore()">Calcular pró-labore</button>
+        <div class="result-box" id="pl-result">
+          <p class="result-label">Custo de vida mensal</p>
+          <p class="result-value" id="pl-custo"></p>
+          <div class="divider"></div>
+          <p class="result-label">Pró-labore mínimo (+20%)</p>
+          <p class="result-value" id="pl-minimo"></p>
+          <div class="divider"></div>
+          <p class="result-label">Pró-labore ideal (≤50% fat.)</p>
+          <p class="result-value" id="pl-ideal"></p>
+          <p class="result-note" id="pl-note"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRECIFICAÇÃO -->
+    <div id="tab-preco" style="display:none">
+      <p class="screen-title">🏷️ Calculadora de Preço Mínimo</p>
+      <p class="screen-sub">Nunca mais trabalhe no prejuízo</p>
+      <div class="card">
+        <p class="card-title"><span>📦</span> Dados do serviço</p>
+        <div class="field"><label>Horas trabalhadas no serviço</label><input type="number" id="pr-horas" placeholder="Ex: 4"></div>
+        <div class="field"><label>Custo por hora desejado (R$)</label><input type="number" id="pr-hora-val" placeholder="Ex: 60"></div>
+        <div class="field"><label>Custo direto (material, deslocamento)</label><input type="number" id="pr-custo-dir" placeholder="Ex: 50"></div>
+        <div class="divider"></div>
+        <p class="card-title"><span>🏢</span> Custos do negócio/mês</p>
+        <div class="field-row">
+          <div class="field"><label>Custos fixos/mês (R$)</label><input type="number" id="pr-fixo" placeholder="Ex: 400"></div>
+          <div class="field"><label>Serviços/mês (qtd)</label><input type="number" id="pr-qtd" placeholder="Ex: 10"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Impostos e taxas (%)</label><input type="number" id="pr-imp" value="8" placeholder="8"></div>
+          <div class="field"><label>Margem de lucro (%)</label><input type="number" id="pr-lucro" value="20" placeholder="20"></div>
+        </div>
+        <button class="btn btn-green" onclick="calcPreco()">Calcular preço mínimo</button>
+        <div class="result-box" id="pr-result">
+          <p class="result-label">Preço mínimo do serviço</p>
+          <p class="result-value" id="pr-valor"></p>
+          <div class="divider"></div>
+          <div id="pr-breakdown"></div>
+          <p class="result-note">Abaixo deste valor você está trabalhando no prejuízo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CAIXA ═══════════════════════════════════════ -->
+  <div class="screen" id="screen-caixa">
+    <p class="screen-title">📊 Fluxo de Caixa</p>
+    <p class="screen-sub">Registre entradas e saídas</p>
+
+    <div class="stats-row">
+      <div class="stat-card green">
+        <p class="stat-label-sm">Entradas</p>
+        <p class="stat-val" id="cx-entrada">R$ 0</p>
+      </div>
+      <div class="stat-card red">
+        <p class="stat-label-sm">Saídas</p>
+        <p class="stat-val" id="cx-saida">R$ 0</p>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <p class="result-label" style="margin-bottom:4px">Saldo atual</p>
+      <p class="result-value" id="cx-saldo" style="font-size:2rem">R$ 0,00</p>
+    </div>
+
+    <!-- ADD TRANSACTION -->
+    <div class="card">
+      <p class="card-title"><span>➕</span> Novo lançamento</p>
+      <div class="tabs" style="margin-bottom:12px">
+        <button class="tab-btn active" id="tipo-entrada-btn" onclick="setTipo('entrada', this)">📥 Entrada</button>
+        <button class="tab-btn" id="tipo-saida-btn" onclick="setTipo('saida', this)">📤 Saída</button>
+      </div>
+      <input type="hidden" id="cx-tipo" value="entrada">
+      <div class="field"><label>Descrição</label><input type="text" id="cx-desc" placeholder="Ex: Pagamento cliente João"></div>
+      <div class="field-row">
+        <div class="field"><label>Valor (R$)</label><input type="number" id="cx-val" placeholder="0,00"></div>
+        <div class="field"><label>Data</label><input type="date" id="cx-data"></div>
+      </div>
+      <button class="btn btn-green" onclick="addTx()">Adicionar</button>
+    </div>
+
+    <!-- TRANSACTION LIST -->
+    <div class="card">
+      <p class="card-title"><span>📋</span> Lançamentos</p>
+      <ul class="tx-list" id="tx-list">
+        <li class="tx-empty">Nenhum lançamento ainda.<br>Adicione sua primeira entrada ou saída.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ MEI ═════════════════════════════════════════ -->
+  <div class="screen" id="screen-mei">
+    <p class="screen-title">📋 MEI & Fisco</p>
+    <p class="screen-sub">Controle suas obrigações</p>
+
+    <!-- DAS -->
+    <div class="card">
+      <p class="card-title"><span>💳</span> DAS 2025 — Toque para marcar como pago</p>
+      <div class="das-grid" id="das-grid"></div>
+      <div class="divider"></div>
+      <div id="das-status"></div>
+    </div>
+
+    <!-- DASN -->
+    <div class="card">
+      <p class="card-title"><span>📄</span> DASN — Declaração Anual</p>
+      <div class="field"><label>Faturamento total do ano (R$)</label><input type="number" id="dasn-fat" placeholder="Ex: 48000"></div>
+      <div class="field">
+        <label>Situação da declaração</label>
+        <select id="dasn-status" onchange="saveDasn()">
+          <option value="pendente">⏳ Pendente — ainda não entreguei</option>
+          <option value="entregue">✅ Entregue no prazo</option>
+          <option value="atrasada">⚠️ Entregue em atraso</option>
+        </select>
+      </div>
+      <div class="field"><label>Data de entrega</label><input type="date" id="dasn-data"></div>
+      <button class="btn btn-green" onclick="saveDasn()">Salvar DASN</button>
+      <div id="dasn-alert" style="margin-top:12px"></div>
+    </div>
+
+    <!-- FATURAMENTO -->
+    <div class="card">
+      <p class="card-title"><span>📈</span> Controle de Faturamento Anual</p>
+      <div class="field"><label>Faturamento acumulado no ano (R$)</label><input type="number" id="fat-acum" placeholder="Ex: 32000" oninput="updateFat()"></div>
+      <div class="prog-wrap" id="fat-prog-wrap" style="display:none">
+        <div class="prog-labels">
+          <span id="fat-perc-label">0%</span>
+          <span>Limite MEI: R$ 81.000</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" id="fat-fill" style="width:0%"></div></div>
+      </div>
+      <div id="fat-alert" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <!-- ══ RESERVA ═════════════════════════════════════ -->
+  <div class="screen" id="screen-reserva">
+    <p class="screen-title">🛡️ Reserva de Emergência</p>
+    <p class="screen-sub">Construa sua proteção financeira</p>
+
+    <!-- META -->
+    <div class="card">
+      <p class="card-title"><span>🎯</span> Defina sua meta</p>
+      <div class="field"><label>Custo mensal total (pessoal + negócio)</label><input type="number" id="res-custo" placeholder="Ex: 4500" oninput="updateReserva()"></div>
+      <div class="field">
+        <label>Meses de proteção</label>
+        <select id="res-meses" onchange="updateReserva()">
+          <option value="6">6 meses — Renda estável</option>
+          <option value="8" selected>8 meses — Renda moderada</option>
+          <option value="10">10 meses — Renda variável</option>
+          <option value="12">12 meses — Alta sazonalidade</option>
+        </select>
+      </div>
+      <div class="result-box show" id="res-meta-box">
+        <p class="result-label">Sua meta de reserva</p>
+        <p class="result-value" id="res-meta">R$ 0,00</p>
+      </div>
+    </div>
+
+    <!-- PROGRESSO -->
+    <div class="card">
+      <p class="card-title"><span>📊</span> Progresso atual</p>
+      <div class="field"><label>Quanto já tenho guardado (R$)</label><input type="number" id="res-atual" placeholder="Ex: 5000" oninput="updateReservaProgress()"></div>
+      <div class="prog-wrap">
+        <div class="prog-labels">
+          <span id="res-perc">0%</span>
+          <span id="res-meta-label">Meta: R$ 0</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill gold" id="res-fill" style="width:0%"></div></div>
+      </div>
+      <div id="res-alert" style="margin-top:10px"></div>
+    </div>
+
+    <!-- MÉTODO -->
+    <div class="card">
+      <p class="card-title"><span>📅</span> Simulador de Construção</p>
+      <div class="field-row">
+        <div class="field"><label>Faturamento médio/mês</label><input type="number" id="res-fat" placeholder="Ex: 5000" oninput="simReserva()"></div>
+        <div class="field">
+          <label>Percentual a guardar</label>
+          <select id="res-pct" onchange="simReserva()">
+            <option value="5">5%</option>
+            <option value="10" selected>10%</option>
+            <option value="15">15%</option>
+            <option value="20">20%</option>
+          </select>
+        </div>
+      </div>
+      <div class="result-box" id="res-sim-box">
+        <p class="result-label">Guardarei por mês</p>
+        <p class="result-value" id="res-mensal"></p>
+        <div class="divider"></div>
+        <p class="result-label">Tempo para atingir a meta</p>
+        <p class="result-value" id="res-tempo"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CHECKLIST ═══════════════════════════════════ -->
+  <div class="screen" id="screen-check">
+    <p class="screen-title">✅ Checklist Geral</p>
+    <p class="screen-sub">Acompanhe seu progresso no curso</p>
+
+    <div class="card" style="margin-bottom:10px">
+      <div class="prog-wrap">
+        <div class="prog-labels">
+          <span>Progresso total</span>
+          <span id="check-perc">0%</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" id="check-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span>🏦</span> Módulo 1 — Separação de Contas</p>
+      <ul class="check-list" id="chk-mod1">
+        <li class="check-item" data-id="c1" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Abri minha conta PJ gratuita</span></li>
+        <li class="check-item" data-id="c2" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Parei de misturar conta pessoal e do negócio</span></li>
+        <li class="check-item" data-id="c3" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Calculei e defini meu pró-labore mensal</span></li>
+        <li class="check-item" data-id="c4" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Configuro o Pix do negócio com a chave CNPJ</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span>🏷️</span> Módulo 2 — Precificação</p>
+      <ul class="check-list" id="chk-mod2">
+        <li class="check-item" data-id="c5" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Mapeei todos os meus custos fixos mensais</span></li>
+        <li class="check-item" data-id="c6" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Calculei o preço mínimo dos meus serviços</span></li>
+        <li class="check-item" data-id="c7" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Incluo impostos e inadimplência no preço</span></li>
+        <li class="check-item" data-id="c8" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Tenho margem de lucro de pelo menos 20%</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span>📊</span> Módulo 3 — Fluxo de Caixa</p>
+      <ul class="check-list" id="chk-mod3">
+        <li class="check-item" data-id="c9" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Registro entradas e saídas todo dia</span></li>
+        <li class="check-item" data-id="c10" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Tenho uma rotina semanal de revisão</span></li>
+        <li class="check-item" data-id="c11" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Faço projeção dos próximos 30 dias</span></li>
+        <li class="check-item" data-id="c12" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Sei antecipar meses com saldo negativo</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span>📋</span> Módulo 4 — MEI & Fisco</p>
+      <ul class="check-list" id="chk-mod4">
+        <li class="check-item" data-id="c13" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Estou em dia com o DAS de todos os meses</span></li>
+        <li class="check-item" data-id="c14" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Entreguei a DASN do último ano</span></li>
+        <li class="check-item" data-id="c15" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Sei qual é meu faturamento acumulado no ano</span></li>
+        <li class="check-item" data-id="c16" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Tenho lembrete configurado para o DAS (dia 20)</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span>🛡️</span> Módulo 5 — Reserva de Emergência</p>
+      <ul class="check-list" id="chk-mod5">
+        <li class="check-item" data-id="c17" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Calculei minha meta de reserva de emergência</span></li>
+        <li class="check-item" data-id="c18" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Tenho conta separada exclusiva para a reserva</span></li>
+        <li class="check-item" data-id="c19" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Guardo um percentual fixo de cada recebimento</span></li>
+        <li class="check-item" data-id="c20" onclick="toggleCheck(this)"><div class="check-box"></div><span class="check-text">Minha reserva está no Tesouro Selic ou CDB</span></li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /app-body -->
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="goScreen('home', this)">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Início</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="goScreen('calc', this)">
+    <span class="nav-icon">🧮</span>
+    <span class="nav-label">Calcular</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="goScreen('caixa', this)">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">Caixa</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="goScreen('mei', this)">
+    <span class="nav-icon">📋</span>
+    <span class="nav-label">MEI</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="goScreen('reserva', this)">
+    <span class="nav-icon">🛡️</span>
+    <span class="nav-label">Reserva</span>
+    <div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" onclick="goScreen('check', this)">
+    <span class="nav-icon">✅</span>
+    <span class="nav-label">Check</span>
+    <div class="nav-dot"></div>
+  </button>
+</nav>
+
+<script>
+// ── STORAGE ──────────────────────────────────────────
+const db = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+
+// ── NAVIGATION ────────────────────────────────────────
+const screens = ['home','calc','caixa','mei','reserva','check'];
+let currentScreen = 'home';
+
+function goScreen(id, btn) {
+  screens.forEach(s => {
+    document.getElementById('screen-' + s)?.classList.remove('active');
+  });
+  document.getElementById('screen-' + id)?.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  currentScreen = id;
+  document.querySelector('.app-body').scrollTop = 0;
+  if (id === 'home') updateDashboard();
+}
+
+function goTo(section) {
+  if (section === 'prolabore' || section === 'preco') {
+    goScreen('calc', document.querySelectorAll('.nav-btn')[1]);
+    if (section === 'preco') {
+      const tabs = document.querySelectorAll('.tabs .tab-btn');
+      switchTab('preco', tabs[1]);
+    }
+  } else if (section === 'caixa')     goScreen('caixa',   document.querySelectorAll('.nav-btn')[2]);
+  else if (section === 'mei')         goScreen('mei',     document.querySelectorAll('.nav-btn')[3]);
+  else if (section === 'reserva')     goScreen('reserva', document.querySelectorAll('.nav-btn')[4]);
+  else if (section === 'checklist')   goScreen('check',   document.querySelectorAll('.nav-btn')[5]);
+}
+
+function switchTab(id, btn) {
+  ['prolabore','preco'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = 'none';
+  });
+  document.getElementById('tab-' + id).style.display = 'block';
+  document.querySelectorAll('#screen-calc .tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function setTipo(tipo, btn) {
+  document.getElementById('cx-tipo').value = tipo;
+  document.querySelectorAll('#screen-caixa .tabs .tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── FORMAT ────────────────────────────────────────────
+const fmt = v => 'R$ ' + parseFloat(v || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fmtShort = v => {
+  v = parseFloat(v || 0);
+  if (Math.abs(v) >= 1000) return 'R$ ' + (v/1000).toFixed(1).replace('.',',') + 'k';
+  return fmt(v);
+};
+
+// ── PRÓ-LABORE ────────────────────────────────────────
+function calcProlabore() {
+  const fields = ['pl-moradia','pl-aliment','pl-transp','pl-saude','pl-lazer','pl-outros'];
+  const total = fields.reduce((s, f) => s + (parseFloat(document.getElementById(f).value) || 0), 0);
+  const minimo = total * 1.2;
+  const fat = parseFloat(document.getElementById('pl-fat').value) || 0;
+  const ideal = fat * 0.5;
+  const box = document.getElementById('pl-result');
+  box.classList.add('show');
+  document.getElementById('pl-custo').textContent = fmt(total);
+  document.getElementById('pl-minimo').textContent = fmt(minimo);
+  document.getElementById('pl-ideal').textContent = fmt(ideal);
+  const note = document.getElementById('pl-note');
+  if (fat > 0 && ideal < minimo) {
+    note.textContent = '⚠️ O faturamento atual não comporta o pró-labore mínimo. Revise a precificação.';
+    note.style.color = '#E53E3E';
+  } else if (fat > 0) {
+    note.textContent = '✅ Seu faturamento suporta o pró-labore. Transfira sempre no mesmo dia do mês.';
+    note.style.color = '#1B6B45';
+  } else { note.textContent = ''; }
+}
+
+// ── PRECIFICAÇÃO ──────────────────────────────────────
+function calcPreco() {
+  const horas   = parseFloat(document.getElementById('pr-horas').value)    || 0;
+  const horaVal = parseFloat(document.getElementById('pr-hora-val').value)  || 0;
+  const custDir = parseFloat(document.getElementById('pr-custo-dir').value) || 0;
+  const fixo    = parseFloat(document.getElementById('pr-fixo').value)      || 0;
+  const qtd     = parseFloat(document.getElementById('pr-qtd').value)       || 1;
+  const imp     = parseFloat(document.getElementById('pr-imp').value)       || 8;
+  const lucro   = parseFloat(document.getElementById('pr-lucro').value)     || 20;
+
+  const custoTempo  = horas * horaVal;
+  const fixoRateado = fixo / qtd;
+  const subtotal    = custoTempo + custDir + fixoRateado;
+  const comImp      = subtotal * (1 + imp / 100);
+  const precoFinal  = comImp * (1 + lucro / 100);
+
+  const box = document.getElementById('pr-result');
+  box.classList.add('show');
+  document.getElementById('pr-valor').textContent = fmt(precoFinal);
+
+  const br = document.getElementById('pr-breakdown');
+  br.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr auto;gap:4px;font-size:.82rem;color:var(--muted)">
+      <span>Custo tempo (${horas}h × R$${horaVal})</span><span>${fmt(custoTempo)}</span>
+      <span>Custo direto</span><span>${fmt(custDir)}</span>
+      <span>Custo fixo rateado</span><span>${fmt(fixoRateado)}</span>
+      <span>Impostos (${imp}%)</span><span>${fmt(comImp - subtotal)}</span>
+      <span>Margem de lucro (${lucro}%)</span><span>${fmt(precoFinal - comImp)}</span>
+    </div>`;
+}
+
+// ── CAIXA ─────────────────────────────────────────────
+let txList = db.get('txList') || [];
+
+function renderTx() {
+  const ul = document.getElementById('tx-list');
+  if (txList.length === 0) {
+    ul.innerHTML = '<li class="tx-empty">Nenhum lançamento ainda.<br>Adicione sua primeira entrada ou saída.</li>';
+    updateCaixaStats();
+    return;
+  }
+  const sorted = [...txList].sort((a,b) => new Date(b.data) - new Date(a.data));
+  ul.innerHTML = sorted.map(tx => `
+    <li class="tx-item">
+      <div class="tx-info">
+        <p class="tx-desc">${tx.desc}</p>
+        <p class="tx-date">${formatDate(tx.data)}</p>
+      </div>
+      <span class="tx-amount ${tx.tipo}">${tx.tipo === 'entrada' ? '+' : '-'}${fmt(tx.val)}</span>
+      <button class="tx-del" onclick="delTx('${tx.id}')">✕</button>
+    </li>`).join('');
+  updateCaixaStats();
+}
+
+function formatDate(d) {
+  const [y, m, day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+function addTx() {
+  const desc = document.getElementById('cx-desc').value.trim();
+  const val  = parseFloat(document.getElementById('cx-val').value);
+  const data = document.getElementById('cx-data').value;
+  const tipo = document.getElementById('cx-tipo').value;
+  if (!desc || !val || !data) return alert('Preencha todos os campos.');
+  txList.push({ id: Date.now().toString(), desc, val, data, tipo });
+  db.set('txList', txList);
+  document.getElementById('cx-desc').value = '';
+  document.getElementById('cx-val').value  = '';
+  renderTx();
+  updateDashboard();
+}
+
+function delTx(id) {
+  txList = txList.filter(t => t.id !== id);
+  db.set('txList', txList);
+  renderTx();
+  updateDashboard();
+}
+
+function updateCaixaStats() {
+  const entradas = txList.filter(t => t.tipo === 'entrada').reduce((s, t) => s + t.val, 0);
+  const saidas   = txList.filter(t => t.tipo === 'saida').reduce((s, t) => s + t.val, 0);
+  const saldo    = entradas - saidas;
+  document.getElementById('cx-entrada').textContent = fmtShort(entradas);
+  document.getElementById('cx-saida').textContent   = fmtShort(saidas);
+  const saldoEl = document.getElementById('cx-saldo');
+  saldoEl.textContent = fmt(saldo);
+  saldoEl.style.color = saldo < 0 ? 'var(--red)' : 'var(--green)';
+}
+
+// Set today's date
+document.getElementById('cx-data').valueAsDate = new Date();
+
+// ── MEI / DAS ─────────────────────────────────────────
+const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+let dasStatus = db.get('dasStatus') || {};
+
+function renderDas() {
+  const grid = document.getElementById('das-grid');
+  const now = new Date();
+  grid.innerHTML = meses.map((m, i) => {
+    const key = `2025-${i+1}`;
+    const status = dasStatus[key] || 'pendente';
+    const isPast = i < now.getMonth() || (i === now.getMonth() && now.getDate() > 20);
+    let cls = '';
+    if (status === 'pago') cls = 'pago';
+    else if (isPast) cls = 'atrasado';
+    const icon = status === 'pago' ? '✅' : (isPast ? '⚠️' : '○');
+    return `<div class="das-month ${cls}" onclick="toggleDas('${key}')">
+      <span class="das-month-icon">${icon}</span>
+      <span class="das-month-name">${m}</span>
+    </div>`;
+  }).join('');
+
+  const pagos = Object.values(dasStatus).filter(v => v === 'pago').length;
+  const atrasados = meses.filter((_, i) => {
+    const key = `2025-${i+1}`;
+    const isPast = i < now.getMonth() || (i === now.getMonth() && now.getDate() > 20);
+    return isPast && dasStatus[key] !== 'pago';
+  }).length;
+
+  document.getElementById('das-status').innerHTML = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge badge-green">${pagos} pagos</span>
+      ${atrasados > 0 ? `<span class="badge badge-red">${atrasados} em atraso</span>` : ''}
+      <span class="badge" style="background:var(--bg);color:var(--muted)">${12 - pagos - atrasados} pendentes</span>
+    </div>`;
+}
+
+function toggleDas(key) {
+  dasStatus[key] = dasStatus[key] === 'pago' ? 'pendente' : 'pago';
+  db.set('dasStatus', dasStatus);
+  renderDas();
+}
+
+function saveDasn() {
+  const fat   = document.getElementById('dasn-fat').value;
+  const stat  = document.getElementById('dasn-status').value;
+  const data  = document.getElementById('dasn-data').value;
+  db.set('dasnData', { fat, stat, data });
+  const el = document.getElementById('dasn-alert');
+  if (stat === 'pendente') {
+    el.innerHTML = '<div class="alert alert-gold"><span class="alert-icon">⚠️</span>Declaração pendente. Prazo: 31 de maio. Acesse gov.br/mei para declarar.</div>';
+  } else if (stat === 'entregue') {
+    el.innerHTML = '<div class="alert alert-green"><span class="alert-icon">✅</span>Declaração entregue. Parabéns! Guarde o recibo em local seguro.</div>';
+  } else {
+    el.innerHTML = '<div class="alert alert-red"><span class="alert-icon">❌</span>Declaração em atraso. Multa de R$ 50. Regularize o quanto antes em gov.br/mei.</div>';
+  }
+}
+
+function updateFat() {
+  const val = parseFloat(document.getElementById('fat-acum').value) || 0;
+  const limite = 81000;
+  const pct = Math.min((val / limite) * 100, 100);
+  document.getElementById('fat-prog-wrap').style.display = 'block';
+  document.getElementById('fat-fill').style.width = pct + '%';
+  document.getElementById('fat-perc-label').textContent = pct.toFixed(1) + '%';
+  const fill = document.getElementById('fat-fill');
+  fill.style.background = pct > 80 ? 'linear-gradient(90deg,#E53E3E,#FC8181)' : 'linear-gradient(90deg,var(--green),var(--green-mid))';
+  const al = document.getElementById('fat-alert');
+  if (pct >= 100) {
+    al.innerHTML = '<div class="alert alert-red"><span class="alert-icon">🚨</span>Limite do MEI atingido! Procure um contador para migrar para ME.</div>';
+  } else if (pct >= 80) {
+    al.innerHTML = '<div class="alert alert-gold"><span class="alert-icon">⚠️</span>Atenção: você está próximo do limite de R$ 81.000. Comece a planejar a migração.</div>';
+  } else if (val > 0) {
+    al.innerHTML = `<div class="alert alert-green"><span class="alert-icon">✅</span>Ainda há ${fmt(limite - val)} de margem no ano. Continue monitorando mensalmente.</div>`;
+  } else { al.innerHTML = ''; }
+}
+
+// ── RESERVA ───────────────────────────────────────────
+function updateReserva() {
+  const custo = parseFloat(document.getElementById('res-custo').value) || 0;
+  const meses = parseInt(document.getElementById('res-meses').value) || 8;
+  const meta = custo * meses;
+  document.getElementById('res-meta').textContent = fmt(meta);
+  db.set('resMeta', { custo, meses, meta });
+  updateReservaProgress();
+  simReserva();
+}
+
+function updateReservaProgress() {
+  const atual = parseFloat(document.getElementById('res-atual').value) || 0;
+  const saved = db.get('resMeta');
+  const meta  = saved?.meta || 0;
+  document.getElementById('res-meta-label').textContent = 'Meta: ' + fmt(meta);
+  const pct = meta > 0 ? Math.min((atual / meta) * 100, 100) : 0;
+  document.getElementById('res-fill').style.width = pct + '%';
+  document.getElementById('res-perc').textContent = pct.toFixed(1) + '%';
+  const al = document.getElementById('res-alert');
+  if (atual === 0) { al.innerHTML = ''; return; }
+  if (pct >= 100) {
+    al.innerHTML = '<div class="alert alert-green"><span class="alert-icon">🎉</span>Meta atingida! Mantenha guardando 5% por mês para manutenção.</div>';
+  } else {
+    const falta = meta - atual;
+    al.innerHTML = `<div class="alert alert-gold"><span class="alert-icon">🎯</span>Faltam ${fmt(falta)} para atingir sua meta. Continue guardando todo mês!</div>`;
+  }
+  db.set('resAtual', atual);
+  updateDashboard();
+}
+
+function simReserva() {
+  const fat  = parseFloat(document.getElementById('res-fat').value) || 0;
+  const pct  = parseFloat(document.getElementById('res-pct').value) || 10;
+  const mensal = fat * pct / 100;
+  const saved  = db.get('resMeta');
+  const meta   = saved?.meta || 0;
+  const atual  = parseFloat(document.getElementById('res-atual').value) || 0;
+  const box    = document.getElementById('res-sim-box');
+  if (fat > 0) {
+    box.classList.add('show');
+    document.getElementById('res-mensal').textContent = fmt(mensal);
+    if (meta > 0 && mensal > 0) {
+      const mesesRestantes = Math.ceil((meta - atual) / mensal);
+      const anos = Math.floor(mesesRestantes / 12);
+      const mesesR = mesesRestantes % 12;
+      const tempo = mesesRestantes <= 0 ? 'Meta já atingida! 🎉'
+        : anos > 0 ? `${anos} ano${anos > 1 ? 's' : ''} e ${mesesR} mês${mesesR !== 1 ? 'es' : ''}`
+        : `${mesesRestantes} mês${mesesRestantes !== 1 ? 'es' : ''}`;
+      document.getElementById('res-tempo').textContent = tempo;
+    } else {
+      document.getElementById('res-tempo').textContent = '—';
+    }
+  } else { box.classList.remove('show'); }
+}
+
+// ── CHECKLIST ─────────────────────────────────────────
+let checkState = db.get('checkState') || {};
+
+function toggleCheck(el) {
+  const id = el.dataset.id;
+  el.classList.toggle('done');
+  el.querySelector('.check-box').textContent = el.classList.contains('done') ? '✓' : '';
+  checkState[id] = el.classList.contains('done');
+  db.set('checkState', checkState);
+  updateCheckProgress();
+}
+
+function loadCheck() {
+  document.querySelectorAll('.check-item').forEach(el => {
+    const id = el.dataset.id;
+    if (checkState[id]) {
+      el.classList.add('done');
+      el.querySelector('.check-box').textContent = '✓';
+    }
+  });
+  updateCheckProgress();
+}
+
+function updateCheckProgress() {
+  const total = document.querySelectorAll('.check-item').length;
+  const done  = document.querySelectorAll('.check-item.done').length;
+  const pct   = total > 0 ? (done / total) * 100 : 0;
+  document.getElementById('check-fill').style.width = pct + '%';
+  document.getElementById('check-perc').textContent = Math.round(pct) + '%';
+}
+
+// ── DASHBOARD ─────────────────────────────────────────
+function updateDashboard() {
+  const entradas = txList.filter(t => t.tipo === 'entrada').reduce((s, t) => s + t.val, 0);
+  const saidas   = txList.filter(t => t.tipo === 'saida').reduce((s, t) => s + t.val, 0);
+  const saldo    = entradas - saidas;
+  const reserva  = db.get('resAtual') || 0;
+
+  document.getElementById('dash-saldo').textContent  = fmt(saldo);
+  document.getElementById('dash-saldo').className    = 'home-saldo' + (saldo < 0 ? ' negativo' : '');
+  document.getElementById('dash-entrada').textContent = fmtShort(entradas);
+  document.getElementById('dash-saida').textContent   = fmtShort(saidas);
+  document.getElementById('dash-reserva').textContent = fmtShort(reserva);
+}
+
+// ── INIT ──────────────────────────────────────────────
+function init() {
+  renderTx();
+  renderDas();
+  loadCheck();
+  updateDashboard();
+
+  // Restore DASN
+  const dasnSaved = db.get('dasnData');
+  if (dasnSaved) {
+    document.getElementById('dasn-fat').value    = dasnSaved.fat || '';
+    document.getElementById('dasn-status').value = dasnSaved.stat || 'pendente';
+    document.getElementById('dasn-data').value   = dasnSaved.data || '';
+  }
+
+  // Restore reserva
+  const resSaved = db.get('resMeta');
+  if (resSaved) {
+    document.getElementById('res-custo').value = resSaved.custo || '';
+    document.getElementById('res-meses').value = resSaved.meses || 8;
+    document.getElementById('res-meta').textContent = fmt(resSaved.meta);
+  }
+  const resAtual = db.get('resAtual');
+  if (resAtual) document.getElementById('res-atual').value = resAtual;
+}
+
+init();
+</script>
+</body>
+</html>
